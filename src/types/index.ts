@@ -22,3 +22,18 @@ export interface IBuyer {
 }
 
 export type TBuyerErrors = Partial<Record<keyof IBuyer, string>>;
+
+export type ProductsResponse = {
+    total: number;
+    items: IProduct[];
+};
+
+export type PostOrder = IBuyer & {
+    total: number,
+    items: string[]
+}
+
+export type OrderResponse = {
+    id: string;
+    total: number;
+};

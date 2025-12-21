@@ -3,8 +3,12 @@ import './scss/styles.scss';
 import { ProductsList } from './components/base/Models/ProductsList.ts';
 import { Cart } from './components/base/Models/Cart.ts';
 import { Buyer } from './components/base/Models/Buyer.ts';
+import { CommunicatorApi } from './components/base/CommunicatorApi.ts';
 
 import { apiProducts } from './utils/data.ts';
+import { Api } from './components/base/Api.ts';
+
+import { API_URL } from './utils/constants.ts';
 
 // Создание экземпляра класса ProductsList и проверка его методов
 
@@ -78,3 +82,17 @@ console.log('Данные о покупателе: ', buyer1);
 
 BuyerModel.removeFormData(); // Очищаем форму
 console.log('Содержание формы после очистки данных: ', BuyerModel.getDataOfBuyer());
+
+// Получение массива товаров через запрос на сервер
+
+const api = new Api(API_URL);
+const communicatorApi = new CommunicatorApi(api);
+
+communicatorApi.getProducts()
+    .then(productsList => {
+        productsListModel.setProducts(productsList.items);
+        console.log('Массив с каталогом товаров: ', productsListModel.getProducts());
+    })
+    .catch(error => {
+        console.error('Ошибка загрузки товаров.', error);
+    });
