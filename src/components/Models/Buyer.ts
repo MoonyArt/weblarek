@@ -1,4 +1,4 @@
-import type { IBuyer, TBuyerErrors } from '../../../types/index.ts';
+import type { IBuyer, TBuyerErrors } from '../../types/index.ts';
 
 export class Buyer {
     protected payment: 'card' | 'cash' | '' = '';
@@ -35,7 +35,7 @@ export class Buyer {
         this.phone = '';
     }
 
-    validationDataOfBuyer(): { isValid: boolean; errors: TBuyerErrors } {
+    validationDataOfBuyer(): { errors: TBuyerErrors } {
         const errors: TBuyerErrors = {};
 
         if (!this.payment) {
@@ -55,12 +55,7 @@ export class Buyer {
         }
 
         return {
-            isValid: Object.keys(errors).length === 0,
             errors
         }
     };
-
-    isValid(): boolean {
-        return this.validationDataOfBuyer().isValid;
-    }
 }

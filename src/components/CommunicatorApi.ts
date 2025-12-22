@@ -1,4 +1,4 @@
-import { IApi, PostOrder, OrderResponse, ProductsResponse } from '../../types/index.ts';
+import { IApi, PostOrder, OrderResponse, ProductsResponse } from '../types/index.ts';
 
 export class CommunicatorApi {
     private api: IApi;

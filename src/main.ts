@@ -1,9 +1,9 @@
 import './scss/styles.scss';
 
-import { ProductsList } from './components/base/Models/ProductsList.ts';
-import { Cart } from './components/base/Models/Cart.ts';
-import { Buyer } from './components/base/Models/Buyer.ts';
-import { CommunicatorApi } from './components/base/CommunicatorApi.ts';
+import { ProductsList } from './components/Models/ProductsList.ts';
+import { Cart } from './components/Models/Cart.ts';
+import { Buyer } from './components/Models/Buyer.ts';
+import { CommunicatorApi } from './components/CommunicatorApi.ts';
 
 import { apiProducts } from './utils/data.ts';
 import { Api } from './components/base/Api.ts';
@@ -24,6 +24,9 @@ if (product) {
     productsListModel.setProduct(product); //Сохраняем товар для дальнейшего просмотра
 }
 
+let selectedProduct = productsListModel.getSelectedProduct();
+console.log('Получение карточки выбранного товара', selectedProduct);
+
 // Создание экземпляра класса Cart и проверка его методов
 
 const CartModel = new Cart();
@@ -41,10 +44,10 @@ console.log('Проверка наличия товара по id: ', CartModel.
 
 let productInCartCounter = CartModel.getProductCounter();
 let totalCostOfCart = CartModel.getTotalCost();
-console.log(`В корзине ${productInCartCounter} товар(ов) на сумму: ${totalCostOfCart} рублей`);
+console.log(`Количество товаров в корзине: ${productInCartCounter}, общей стоимостью: ${totalCostOfCart} рублей`);
 
 CartModel.clearCart(); // Очищаем корзну от товаров
-console.log(`После очистки в корзине ${CartModel.getProductCounter()} товар(ов)`);
+console.log(`После очистки в корзине ${CartModel.getProductCounter()} товаров`);
 
 // Создание экземпляра класса Buyer и проверка его методов
 
@@ -57,7 +60,7 @@ BuyerModel.setDataOfBuyer({
 
 const validation = BuyerModel.validationDataOfBuyer();
 
-if (!validation.isValid) {
+if (validation) {
     Object.entries(validation.errors).forEach(([field, error]) => {
         console.log(`Ошибка в поле ${field}: ${error}`);
     });

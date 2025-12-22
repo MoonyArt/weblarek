@@ -1,4 +1,4 @@
-import type { IProduct } from '../../../types/index.ts';
+import type { IProduct } from '../../types/index.ts';
 
 export class ProductsList {
     protected products: IProduct[] = [];
@@ -20,6 +20,10 @@ export class ProductsList {
     setProduct(product: IProduct): void {
         this.selectedProduct = product;
     };
+
+    getSelectedProduct(): IProduct | null {
+        return this.selectedProduct;
+    }
 
     getProduct(id: string): IProduct | undefined {
         return this.products.find(product => product.id === id) || undefined;

@@ -1,4 +1,4 @@
-import type { IProduct } from '../../../types/index.ts';
+import type { IProduct } from '../../types/index.ts';
 
 export class Cart {
     protected selectedProducts: IProduct[] = [];
@@ -24,13 +24,7 @@ export class Cart {
     };
 
     getTotalCost(): number {
-        let sum: number = 0;
-        this.selectedProducts.forEach(product => {
-            if (product.price !== null) {
-                sum += product.price
-            }
-        });
-        return sum;
+        return this.selectedProducts.reduce((total, item) => total + (item.price || 0), 0);
     };
 
     checkProductAvailable(id: string): boolean {
