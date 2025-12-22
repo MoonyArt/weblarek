@@ -29,36 +29,36 @@ console.log('Получение карточки выбранного товар
 
 // Создание экземпляра класса Cart и проверка его методов
 
-const CartModel = new Cart();
+const cartModel = new Cart();
 
-CartModel.addProduct(apiProducts.items[0]); // Добавляем товар в корзину
-CartModel.addProduct(apiProducts.items[1]);
-CartModel.addProduct(apiProducts.items[2]);
+cartModel.addProduct(apiProducts.items[0]); // Добавляем товар в корзину
+cartModel.addProduct(apiProducts.items[1]);
+cartModel.addProduct(apiProducts.items[2]);
 
-const selectedProducts = CartModel.getSelectedProducts();
+const selectedProducts = cartModel.getSelectedProducts();
 console.log('Список товаров, добавленных в корзну: ', selectedProducts);
 
-CartModel.removeProduct('b06cde61-912f-4663-9751-09956c0eed67'); // Удаляем товар из корзины
+cartModel.removeProduct('b06cde61-912f-4663-9751-09956c0eed67'); // Удаляем товар из корзины
 
-console.log('Проверка наличия товара по id: ', CartModel.checkProductAvailable('b06cde61-912f-4663-9751-09956c0eed67'));
+console.log('Проверка наличия товара по id: ', cartModel.checkProductAvailable('b06cde61-912f-4663-9751-09956c0eed67'));
 
-let productInCartCounter = CartModel.getProductCounter();
-let totalCostOfCart = CartModel.getTotalCost();
+let productInCartCounter = cartModel.getProductCounter();
+let totalCostOfCart = cartModel.getTotalCost();
 console.log(`Количество товаров в корзине: ${productInCartCounter}, общей стоимостью: ${totalCostOfCart} рублей`);
 
-CartModel.clearCart(); // Очищаем корзну от товаров
-console.log(`После очистки в корзине ${CartModel.getProductCounter()} товаров`);
+cartModel.clearCart(); // Очищаем корзну от товаров
+console.log(`После очистки в корзине ${cartModel.getProductCounter()} товаров`);
 
 // Создание экземпляра класса Buyer и проверка его методов
 
-const BuyerModel = new Buyer();
+const buyerModel = new Buyer();
 
-BuyerModel.setDataOfBuyer({
+buyerModel.setDataOfBuyer({
     email: 'example@example.ru',
     phone: '+7(915)1234567'
 });
 
-const validation = BuyerModel.validationDataOfBuyer();
+const validation = buyerModel.validationDataOfBuyer();
 
 if (validation) {
     Object.entries(validation.errors).forEach(([field, error]) => {
@@ -66,25 +66,25 @@ if (validation) {
     });
 }
 
-BuyerModel.setDataOfBuyer({
+buyerModel.setDataOfBuyer({
     payment: 'card',
     email: 'example@example.ru',
     phone: '+7(915)1234567',
     address: '3-я ул. Строителей, д. 25, кв. 12'
 });
 
-let buyer1 = BuyerModel.getDataOfBuyer();
+let buyer1 = buyerModel.getDataOfBuyer();
 console.log('Данные о покупателе: ', buyer1);
 
-BuyerModel.setDataOfBuyer({ // Сохраняем новый адрес
+buyerModel.setDataOfBuyer({ // Сохраняем новый адрес
     address: 'г. Санкт-Петербург, 3-я ул. Строителей, д. 25, кв. 12'
 });
 
-buyer1 = BuyerModel.getDataOfBuyer();
+buyer1 = buyerModel.getDataOfBuyer();
 console.log('Данные о покупателе: ', buyer1);
 
-BuyerModel.removeFormData(); // Очищаем форму
-console.log('Содержание формы после очистки данных: ', BuyerModel.getDataOfBuyer());
+buyerModel.removeFormData(); // Очищаем форму
+console.log('Содержание формы после очистки данных: ', buyerModel.getDataOfBuyer());
 
 // Получение массива товаров через запрос на сервер
 
