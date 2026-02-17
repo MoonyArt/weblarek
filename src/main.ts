@@ -1,7 +1,7 @@
 import './scss/styles.scss';
 
 import { ProductsList } from './components/Models/ProductsList.ts';
-import { Cart } from './components/Models/Cart.ts';
+import { Basket } from './components/Models/Basket.ts';
 import { Buyer } from './components/Models/Buyer.ts';
 import { CommunicatorApi } from './components/CommunicatorApi.ts';
 
@@ -27,27 +27,27 @@ if (product) {
 let selectedProduct = productsListModel.getSelectedProduct();
 console.log('Получение карточки выбранного товара', selectedProduct);
 
-// Создание экземпляра класса Cart и проверка его методов
+// Создание экземпляра класса Basket и проверка его методов
 
-const cartModel = new Cart();
+const basketModel = new Basket();
 
-cartModel.addProduct(apiProducts.items[0]); // Добавляем товар в корзину
-cartModel.addProduct(apiProducts.items[1]);
-cartModel.addProduct(apiProducts.items[2]);
+basketModel.addProduct(apiProducts.items[0]); // Добавляем товар в корзину
+basketModel.addProduct(apiProducts.items[1]);
+basketModel.addProduct(apiProducts.items[2]);
 
-const selectedProducts = cartModel.getSelectedProducts();
+const selectedProducts = basketModel.getSelectedProducts();
 console.log('Список товаров, добавленных в корзну: ', selectedProducts);
 
-cartModel.removeProduct('b06cde61-912f-4663-9751-09956c0eed67'); // Удаляем товар из корзины
+basketModel.removeProduct('b06cde61-912f-4663-9751-09956c0eed67'); // Удаляем товар из корзины
 
-console.log('Проверка наличия товара по id: ', cartModel.checkProductAvailable('b06cde61-912f-4663-9751-09956c0eed67'));
+console.log('Проверка наличия товара по id: ', basketModel.checkProductAvailable('b06cde61-912f-4663-9751-09956c0eed67'));
 
-let productInCartCounter = cartModel.getProductCounter();
-let totalCostOfCart = cartModel.getTotalCost();
-console.log(`Количество товаров в корзине: ${productInCartCounter}, общей стоимостью: ${totalCostOfCart} рублей`);
+let productInBasketCounter = basketModel.getProductCounter();
+let totalCostOfBasket = basketModel.getTotalCost();
+console.log(`Количество товаров в корзине: ${productInBasketCounter}, общей стоимостью: ${totalCostOfBasket} рублей`);
 
-cartModel.clearCart(); // Очищаем корзну от товаров
-console.log(`После очистки в корзине ${cartModel.getProductCounter()} товаров`);
+basketModel.clearBasket(); // Очищаем корзну от товаров
+console.log(`После очистки в корзине ${basketModel.getProductCounter()} товаров`);
 
 // Создание экземпляра класса Buyer и проверка его методов
 

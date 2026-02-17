@@ -1,6 +1,6 @@
 import type { IProduct } from '../../types/index.ts';
 
-export class Cart {
+export class Basket {
     protected selectedProducts: IProduct[] = [];
 
     constructor(selectedProducts?: IProduct[]) {
@@ -31,7 +31,7 @@ export class Cart {
         return this.selectedProducts.some(product => product.id === id)
     }
 
-    clearCart(): void {
+    clearBasket(): void {
         this.selectedProducts = [];
     };
 }
