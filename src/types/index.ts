@@ -1,7 +1,6 @@
 import { ProductsList } from "../components/Models/ProductsList";
 import { CardCatalog } from "../components/views/card/CardCatalog";
 import { cloneTemplate } from "../utils/utils";
-import { EventEmitter } from "../components/base/Events";
 
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
@@ -46,24 +45,3 @@ export type OrderResponse = {
 export interface ICardActions {
   onClick?: () => void;
 }
-
-const events = new EventEmitter();
-
-events.on('catalog:changed', () => {
-  const itemCards = ProductsList.getProducts().map((item) => {
-    const card = new CardCatalog(cloneTemplate(cardCatalogTemplate), {
-      onClick: () => events.emit('card:select', {id: item.id}),
-    });
-    return card.render(item);
-  })
-
-  gallery.render({ catalog: itemCards });
-})
-
-events.on('card:select', (data: { id: string }) => {
-  const product = ProductsList.getProduct(data.id);
-  if (product) {
-    // Открываем превью
-    console.log('Выбран товар:', product);
-  }
-});

@@ -12,7 +12,7 @@ export class Gallery extends Component<IGalleryData> {
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
 
-        this.catalogElement = ensureElement<HTMLElement>('.gallery', this.container);
+        this.catalogElement = container;
     }
 
     set catalog(cards: HTMLElement[]) {

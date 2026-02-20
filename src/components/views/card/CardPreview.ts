@@ -22,7 +22,11 @@ export class CardPreview extends Card<TCardPreviewData> {
         this.buyButtonElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
         this.buyButtonElement.addEventListener('click', () => {
-            this.events.emit('product:add-to-basket');
+            if (this.buyButtonElement.textContent === 'Купить') {
+                this.events.emit('product:add-to-basket');
+            } else if (this.buyButtonElement.textContent === 'Удалить из корзины') {
+                this.events.emit('product:remove-from-basket');
+            }
         })
     }
 

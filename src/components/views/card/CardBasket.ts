@@ -5,7 +5,7 @@ import { Card } from "./Card";
 
 type TCardBasketData = Pick<IProduct, 'image' | 'category' | 'description'>;
 
-export class CardPreview extends Card<TCardBasketData> {
+export class CardBasket extends Card<TCardBasketData> {
     protected indexElement: HTMLElement;
     protected deleteButtonElement: HTMLButtonElement;
 
@@ -16,7 +16,7 @@ export class CardPreview extends Card<TCardBasketData> {
         this.deleteButtonElement = ensureElement<HTMLButtonElement>('.basket__item-delete', this.container);
 
         this.deleteButtonElement.addEventListener('click', () => {
-            this.events.emit('product:delete-from-basket');
+            this.events.emit('product:remove-from-basket');
         })
     }
 

@@ -1,16 +1,18 @@
 import type { IProduct } from '../../types/index.ts';
+import { IEvents } from '../base/Events.ts';
 
 export class ProductsList {
     protected products: IProduct[] = [];
     protected selectedProduct: IProduct | null = null;
 
-    constructor(products?: IProduct[], product?: IProduct) {
+    constructor(protected events: IEvents, products?: IProduct[], product?: IProduct) {
         this.products = products || [];
         this.selectedProduct = product || null;
     };
 
     setProducts(products: IProduct[]): void {
         this.products = products;
+        this.events.emit('products:changed');
     };
 
     getProducts(): IProduct[] {
@@ -19,6 +21,7 @@ export class ProductsList {
 
     setProduct(product: IProduct): void {
         this.selectedProduct = product;
+        this.events.emit('product:changed', product);
     };
 
     getSelectedProduct(): IProduct | null {

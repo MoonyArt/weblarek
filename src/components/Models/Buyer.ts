@@ -1,4 +1,5 @@
 import type { IBuyer, TBuyerErrors } from '../../types/index.ts';
+import { IEvents } from '../base/Events.ts';
 
 export class Buyer {
     protected payment: 'card' | 'cash' | '' = '';
@@ -6,7 +7,7 @@ export class Buyer {
     protected email: string = '';
     protected phone: string = '';
 
-    constructor(buyer?: Partial<IBuyer>) {
+    constructor(protected events: IEvents, buyer?: Partial<IBuyer>) {
         if (buyer) {
             this.setDataOfBuyer(buyer);
         }
@@ -26,6 +27,13 @@ export class Buyer {
         if (buyer.address !== undefined) this.address = buyer.address.trim();
         if (buyer.email !== undefined) this.email = buyer.email.trim();
         if (buyer.phone !== undefined) this.phone = buyer.phone.trim();
+
+        const validation = this.validationDataOfBuyer();
+        this.events.emit('buyer:changed', {
+            data: this.getDataOfBuyer(),
+            errors: validation.errors,
+            isValid: Object.keys(validation.errors).length === 0
+        });
     }
 
     removeFormData(): void {
@@ -33,6 +41,7 @@ export class Buyer {
         this.address = '';
         this.email = '';
         this.phone = '';
+        this.events.emit('buyer:cleared');
     }
 
     validationDataOfBuyer(): { errors: TBuyerErrors } {
