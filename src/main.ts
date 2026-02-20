@@ -22,6 +22,7 @@ import { CardPreview } from './components/views/card/CardPreview.ts';
 import { CardBasket } from './components/views/card/CardBasket.ts';
 import { FormOrder } from './components/views/form/FormOrder.ts';
 import { FormContacts } from './components/views/form/FormContacts.ts';
+import { IBuyer, TBuyerErrors } from './types/index.ts';
 
 
 // Создание экземпляра брокера событий
@@ -70,6 +71,15 @@ if (!headerElement) {
     throw new Error('Элемент .header не найден');
 }
 const header = new Header(events, headerElement);
+
+const formOrderTemplate = document.getElementById('order') as HTMLTemplateElement;
+const formOrder = new FormOrder(events, cloneTemplate(formOrderTemplate));
+
+const formContactsTemplate = document.getElementById('contacts') as HTMLTemplateElement;
+const formContacts = new FormContacts(events, cloneTemplate(formContactsTemplate));
+
+const successOrderTemplate = document.getElementById('success') as HTMLTemplateElement;
+const successOrder = new SuccessOrder(events, cloneTemplate(successOrderTemplate));
 
 // Презентер - обработка событий в приложении
 
@@ -170,7 +180,124 @@ events.on('basket:open', () => {
     modal.open();
 });
 
+// Нажатие кнопки оформления заказа
+events.on('order:open', () => {
+    modal.content = formOrder.render();
+    modal.open();
+});
 
+// Нажатие кнопки выбора способа оплаты по карте
+events.on('payment:by-card', (data: { payment: 'card' }) => {
+    formOrder.payment = data.payment;
+    buyerModel.setDataOfBuyer({ payment: data.payment });
+});
+
+// Нажатие кнопки выбора способа оплаты наличными
+events.on('payment:in-cash', (data: { payment: 'cash' }) => {
+    formOrder.payment = data.payment;
+    buyerModel.setDataOfBuyer({ payment: data.payment });
+});
+
+// Событие изменения адреса покупателя
+events.on('order:address-change', ( data: {address: string}) => {
+    buyerModel.setDataOfBuyer({ address: data.address })
+    formOrder.address = data.address;
+});
+
+// Событие изменения адреса электронной почты покупателя
+events.on('contacts:email-change', ( data: {email: string}) => {
+    buyerModel.setDataOfBuyer({ email: data.email })
+    formContacts.email = data.email;
+});
+
+// Событие изменения телефона покупателя
+events.on('contacts:phone-change', ( data: {phone: string}) => {
+    buyerModel.setDataOfBuyer({ phone: data.phone })
+    formContacts.phone = data.phone;
+});
+
+// Событие изменения данных покупателя
+events.on('buyer:changed', () => {
+    const buyerData = buyerModel.getDataOfBuyer();
+    const validation = buyerModel.validationDataOfBuyer();
+
+    formOrder.payment = buyerData.payment || '';
+    formOrder.address = buyerData.address || '';
+
+    // Проверяем наличие полей только для FormOrder
+    if (buyerData.payment && buyerData.address) {
+        formOrder.buttonActive = true;
+        formOrder.errors = '';
+    } else {
+        formOrder.buttonActive = false;
+
+        if (validation.errors.payment) {
+            formOrder.errors = validation.errors.payment;
+        } else if(validation.errors.address) {
+            formOrder.errors = validation.errors.address;
+        }
+    }
+
+    // Обработка события изменения данных в форме с контактными данными
+    if (formContacts) {
+        formContacts.email = buyerData.email || '';
+        formContacts.phone = buyerData.phone || '';
+
+        // Проверяем наличие полей только для FormContacts
+        if (buyerData.email && buyerData.phone) {
+            formContacts.buttonActive = true;
+            formContacts.errors = '';
+        } else {
+            formContacts.buttonActive = false;
+
+            if (validation.errors.email) {
+                formContacts.errors = validation.errors.email;
+            } else if (validation.errors.phone) {
+                formContacts.errors = validation.errors.phone;
+            }
+        }
+    }
+});
+
+// Нажатие кнопки перехода ко второй форме оформления заказа
+events.on('order:submit', () => {
+    modal.content = formContacts.render();
+})
+
+// Нажатие кнопки оплаты/завершения оформления заказа
+events.on('contacts:submit', () => {
+    const totalCost = basketModel.getTotalCost();
+    successOrder.totalCost = totalCost;
+    modal.content = successOrder.render();
+})
+
+// Событие закрытия окна с сообщением об успешном оформлении заказа
+events.on('success:close', () => {
+    modal.close();
+    basketModel.clearBasket();
+    buyerModel.removeFormData();
+})
+
+// Событие очистки корзины
+events.on('basket:cleared', () => {
+    header.counter = basketModel.getSelectedProducts.length;
+    console.log('Корзина очищена');
+})
+
+// Событие очистки формы с данными покупателя
+events.on('buyer:cleared', () => {
+    console.log('Данные покупателя очищены');
+})
+
+// Событие открытия модального окна
+events.on('modal:open', () => {
+    console.log('Открыто модальное окно');
+})
+
+// Событие закрытия модального окна
+events.on('modal:close', () => {
+    console.log('Модальное окно закрыто');
+})
 
 
 // Получение массива товаров через запрос на сервер
