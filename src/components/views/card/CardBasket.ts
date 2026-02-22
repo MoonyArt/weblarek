@@ -5,19 +5,23 @@ import { Card } from "./Card";
 
 type TCardBasketData = Pick<IProduct, 'image' | 'category' | 'description'>;
 
+interface ICardBasketActions {
+  onDelete?: () => void;
+}
+
 export class CardBasket extends Card<TCardBasketData> {
     protected indexElement: HTMLElement;
     protected deleteButtonElement: HTMLButtonElement;
 
-    constructor(protected events: IEvents, container: HTMLElement) {
+    constructor(container: HTMLElement,  actions?: ICardBasketActions) {
         super(container);
 
         this.indexElement = ensureElement<HTMLElement>('.basket__item-index', this.container);
         this.deleteButtonElement = ensureElement<HTMLButtonElement>('.basket__item-delete', this.container);
 
-        this.deleteButtonElement.addEventListener('click', () => {
-            this.events.emit('product:remove-from-basket');
-        })
+        if (actions?.onDelete) {
+            this.deleteButtonElement.addEventListener('click', actions.onDelete);
+        }
     }
 
     set index(value: number) {

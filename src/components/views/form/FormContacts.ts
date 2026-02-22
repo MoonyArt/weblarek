@@ -16,11 +16,11 @@ export class FormContacts extends Form<TFormContactsData> {
         this.phoneInputElement = ensureElement<HTMLInputElement>('input[name="phone"]', this.container);
 
         this.emailInputElement.addEventListener('input', () => {
-            this.events.emit('contacts:email-change', {email: this.emailInputElement.value});
+            this.events.emit('emailInput:change', {email: this.emailInputElement.value});
         })
 
         this.phoneInputElement.addEventListener('input', ()=> {
-            this.events.emit('contacts:phone-change', {phone: this.phoneInputElement.value});
+            this.events.emit('phoneInput:change', {phone: this.phoneInputElement.value});
         })
     }
 

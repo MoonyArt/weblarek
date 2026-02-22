@@ -41,7 +41,3 @@ export type OrderResponse = {
     id: string;
     total: number;
 };
-
-export interface ICardActions {
-  onClick?: () => void;
-}

@@ -21,7 +21,7 @@ export class ProductsList {
 
     setProduct(product: IProduct): void {
         this.selectedProduct = product;
-        this.events.emit('product:changed', product);
+        this.events.emit('product:changed');
     };
 
     getSelectedProduct(): IProduct | null {

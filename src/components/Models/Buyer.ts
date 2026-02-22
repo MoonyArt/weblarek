@@ -28,12 +28,7 @@ export class Buyer {
         if (buyer.email !== undefined) this.email = buyer.email.trim();
         if (buyer.phone !== undefined) this.phone = buyer.phone.trim();
 
-        const validation = this.validationDataOfBuyer();
-        this.events.emit('buyer:changed', {
-            data: this.getDataOfBuyer(),
-            errors: validation.errors,
-            isValid: Object.keys(validation.errors).length === 0
-        });
+        this.events.emit('buyer:changed');
     }
 
     removeFormData(): void {
@@ -41,7 +36,7 @@ export class Buyer {
         this.address = '';
         this.email = '';
         this.phone = '';
-        this.events.emit('buyer:cleared');
+        this.events.emit('buyer:changed');
     }
 
     validationDataOfBuyer(): { errors: TBuyerErrors } {

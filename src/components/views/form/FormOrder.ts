@@ -18,15 +18,15 @@ export class FormOrder extends Form<TFormOrderData> {
         this.addressInputElement = ensureElement<HTMLInputElement>('input[name="address"]', this.container);
 
         this.cardButtonElement.addEventListener('click', () => {
-            this.events.emit('payment:by-card', { payment: 'card' });
+            this.events.emit('paymentCardButton:click', { payment: 'card' });
         });
 
         this.cashButtonElement.addEventListener('click', () => {
-            this.events.emit('payment:in-cash', { payment: 'cash' });
+            this.events.emit('paymentCashButton:click', { payment: 'cash' });
         });
 
         this.addressInputElement.addEventListener('input', () => {
-            this.events.emit('order:address-change', {address: this.addressInputElement.value});
+            this.events.emit('addressInput:change', {address: this.addressInputElement.value});
         });
     }
 

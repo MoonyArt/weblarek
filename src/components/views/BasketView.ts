@@ -22,6 +22,8 @@ export class BasketView extends Component<IBasketData> {
         this.orderButtonElement.addEventListener('click', () => {
             this.events.emit('order:open');
         })
+
+        this.buttonActive = false;
     }
 
     set basketList(cards: HTMLElement[]) {
@@ -32,11 +34,7 @@ export class BasketView extends Component<IBasketData> {
         this.totalCostElement.textContent = `${value} синапсов`;
     }
 
-    set buttonText(value: string) {
-        this.orderButtonElement.textContent = value;
-    }
-
     set buttonActive(isActive: boolean) {
-        this.orderButtonElement.classList.toggle('basket__button_disabled', !isActive);
+        this.orderButtonElement.disabled = !isActive;
     }
 }

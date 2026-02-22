@@ -15,19 +15,14 @@ export class Basket {
         }
 
         this.selectedProducts.push(product);
-        this.events.emit('basket:changed', {
-            items: this.getSelectedProducts(),
-            count: this.getProductCounter(),
-            total: this.getTotalCost()
-        });
+        this.events.emit('basket:changed');
+        this.events.emit('product:changed');
     }
 
     removeProduct(id: string): void {
         this.selectedProducts = this.selectedProducts.filter(product => product.id !== id);
-        this.events.emit('basket:changed', {
-            count: this.getProductCounter(),
-            total: this.getTotalCost()
-        });
+        this.events.emit('basket:changed');
+        this.events.emit('product:changed');
     };
 
     getSelectedProducts(): IProduct[] {
@@ -48,6 +43,6 @@ export class Basket {
 
     clearBasket(): void {
         this.selectedProducts = [];
-        this.events.emit('basket:cleared')
+        this.events.emit('basket:changed')
     };
 }

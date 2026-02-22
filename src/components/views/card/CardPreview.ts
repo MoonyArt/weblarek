@@ -11,7 +11,7 @@ export class CardPreview extends Card<TCardPreviewData> {
     protected categoryElement: HTMLElement;
     protected imageElement: HTMLImageElement;
     protected textElement: HTMLElement;
-    protected buyButtonElement: HTMLButtonElement;
+    protected cardPreviewButtonElement: HTMLButtonElement;
 
     constructor(protected events: IEvents, container: HTMLElement) {
         super(container);
@@ -19,14 +19,10 @@ export class CardPreview extends Card<TCardPreviewData> {
         this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
         this.textElement = ensureElement<HTMLElement>('.card__text', this.container);
-        this.buyButtonElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
+        this.cardPreviewButtonElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
-        this.buyButtonElement.addEventListener('click', () => {
-            if (this.buyButtonElement.textContent === 'Купить') {
-                this.events.emit('product:add-to-basket');
-            } else if (this.buyButtonElement.textContent === 'Удалить из корзины') {
-                this.events.emit('product:remove-from-basket');
-            }
+        this.cardPreviewButtonElement.addEventListener('click', () => {
+            this.events.emit('productButton:click');
         })
     }
 
@@ -48,10 +44,10 @@ export class CardPreview extends Card<TCardPreviewData> {
     }
 
     set buttonText(value: string) {
-        this.buyButtonElement.textContent = value;
+        this.cardPreviewButtonElement.textContent = value;
     }
 
     set buttonActive(isActive: boolean) {
-        this.buyButtonElement.disabled = !isActive;
+        this.cardPreviewButtonElement.disabled = !isActive;
     }
 }
