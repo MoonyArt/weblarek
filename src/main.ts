@@ -39,9 +39,6 @@ const galleryElement = ensureElement<HTMLElement>('.gallery');
 const gallery = new Gallery(events, galleryElement);
 
 const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
-const cardCatalog = new CardCatalog(cloneTemplate(cardCatalogTemplate), {
-    onClick: () => console.log('Клик по карточке')
-})
 
 const modalElement = ensureElement<HTMLElement>('#modal-container');
 const modal = new Modal(events, modalElement);
@@ -53,9 +50,6 @@ const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const basketView = new BasketView(events, cloneTemplate(basketTemplate));
 
 const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
-const cardBasket = new CardBasket(cloneTemplate(cardBasketTemplate), {
-    onDelete: () => console.log('Клик по кнопке удаления товара из корзины')
-});
 
 const headerElement = ensureElement<HTMLElement>('.header');
 const header = new Header(events, headerElement);
@@ -91,9 +85,6 @@ events.on('card:select', (data: { id: string }) => {
     if (!product) return
     // Сохраняем товар, выбранный для просмотра
     productsListModel.setProduct(product);
-
-    modal.content = cardPreview.render(product);
-    modal.open();
 });
 
 // Событие изменения товара, выбранного для просмотра
@@ -111,6 +102,9 @@ events.on('product:changed', () => {
         cardPreview.buttonActive = true;
         cardPreview.buttonText = 'Купить';
     }
+
+    modal.content = cardPreview.render(product);
+    modal.open();
 });
 
 // Собыйтие изменения содержимого корзины
@@ -150,11 +144,15 @@ events.on('card:select-to-delete', (data: { id: string }) => {
 events.on('productButton:click', () => {
     const product = productsListModel.getSelectedProduct();
     if (!product || product.price === null) return;
-    if (basketModel.checkProductAvailable(product.id)) {
+    
+    const cardPreviewButtonElement = document.querySelector('.card__button');
+    if (!cardPreviewButtonElement) return;
+    if(cardPreviewButtonElement.textContent === 'Удалить из корзины') {
         basketModel.removeProduct(product.id);
-    } else {
+    } else if(cardPreviewButtonElement.textContent === 'Купить') {
         basketModel.addProduct(product);
     }
+    modal.close();
 });
 
 // Нажатие кнопки открытия корзины

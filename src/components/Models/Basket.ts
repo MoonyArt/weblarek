@@ -16,13 +16,11 @@ export class Basket {
 
         this.selectedProducts.push(product);
         this.events.emit('basket:changed');
-        this.events.emit('product:changed');
     }
 
     removeProduct(id: string): void {
         this.selectedProducts = this.selectedProducts.filter(product => product.id !== id);
         this.events.emit('basket:changed');
-        this.events.emit('product:changed');
     };
 
     getSelectedProducts(): IProduct[] {
